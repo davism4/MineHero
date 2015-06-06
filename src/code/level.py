@@ -2,7 +2,6 @@ import pygame
 import constants as con
 import tile
 
-
 def run():
     screen = con.screen
     
@@ -11,8 +10,8 @@ def run():
     # Initialize the grid
     board = tile.Board(con.GRID_SIZE, con.GRID_SIZE)
     board.createBoard()
-    board.putmine(5,5)
-    board.putmine(3,3)
+    board.getTile(5, 5).setTileType(con.TYPE_BOMB_ACTIVE)
+    board.getTile(3, 3).setTileType(con.TYPE_BOMB_ACTIVE)
 
     # Player variables
     health = con.MAX_HEALTH
@@ -41,7 +40,7 @@ def run():
             return False
         elif (y >= con.GRID_SIZE or y <= 0):
             return False
-        elif (grid[x][y] == con.WALL_TYPE):# or grid[x][y] == con.BOMB_ACTIVE_TYPE):
+        elif (board.getTile(x,y).getTileType()==con.TYPE_WALL):# or grid[x][y] == con.TYPE_BOMB_ACTIVE):
             return False
         else:
             return True
@@ -104,9 +103,9 @@ def run():
                         dest_y = pos_y + 1
                     #print("destination: "+`dest_x`+' , '+`dest_y`)
                     if can_move(dest_x,dest_y):
-                        if (grid[dest_x][dest_y] == con.BOMB_ACTIVE_TYPE):
+                        if (board.getTile(x,y).getTileType() == con.TYPE_BOMB_ACTIVE):
                             health -= 1
-                            grid[dest_x][dest_y] = con.BOMB_INACTIVE_TYPE
+                            board.getTile(x,y).setTileType(con.TYPE_BOMB_INACTIVE)
                         else:
                             pos_x = dest_x
                             pos_y = dest_y
@@ -118,12 +117,13 @@ def run():
         # Tiles are mainly static
         for y in range(0, con.GRID_SIZE):
             for x in range(0, con.GRID_SIZE):
-                if (grid[x][y] == con.BOMB_ACTIVE_TYPE):
+                if (board.getTile(x,y).getTileType()==con.TYPE_BOMB_ACTIVE):
                     pygame.draw.rect(screen, con.RED, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
-                elif (grid[x][y] == con.BOMB_INACTIVE_TYPE):
+                
+		elif (board.getTile(x,y).getTileType()==con.TYPE_BOMB_INACTIVE):
                     pygame.draw.rect(screen, con.GRAY, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
 
-                elif (grid[x][y] == con.WALL_TYPE):
+                elif (board.getTile(x,y).getTileType()==con.TYPE_WALL):
                     pygame.draw.rect(screen, con.BLACK, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
 
         pygame.draw.rect(screen, con.GREEN, (draw_x, draw_y, con.TILE_WIDTH, con.TILE_WIDTH))
