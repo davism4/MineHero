@@ -9,7 +9,7 @@ BOMB_INACTIVE_TYPE = -2
 WALL_TYPE = 9
 
 # Player variables initial values
-MAX_HEALTH = 10
+MAX_HEALTH = 3
 MOVE_SPEED = 1
 
 # Directions
@@ -18,6 +18,13 @@ NORTH = 2
 EAST = 4
 SOUTH = 6
 WEST = 8
+
+# Colors
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLACK = (0, 0, 0)
+GRAY = (128, 128, 128)
 
 # Specify as percentages of the game window
 # Example: Map screen goes from 0,0 to 0.5,1
