@@ -43,9 +43,6 @@ class Board(object):
 
     def Findsurrounds(self,x,y):
         neighboursArray= []
-	print x
-	print y
-	print "\n"
 	if y == 1:
 		neighboursArray.append([y + 1,x])		#bottom center
 		if x == 1:	#three surrounding zones
@@ -100,7 +97,7 @@ class Tile(Board):
     #def __init__(self, Ifbomb, BombSurround, IfRevealed, IfWall):
     def __init__(self, j, i):
         self.IfBomb = False #If there's a bomb there
-	    self.BombActive = False #If it's on/off
+	self.BombActive = False #If it's on/off
         self.NumBombSurround = 0 #How much stuff surrounds it
         self.IfRevealed = False #If it's been stepped on
         self.Xpos = i #X Coord
@@ -143,6 +140,6 @@ class Tile(Board):
     def setYpos(Z):
         self.Ypos = Z
 
-	def __getitem__(self,key):
+    def __getitem__(self,key):
 	return 0
     
