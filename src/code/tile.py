@@ -1,15 +1,14 @@
 class Board(object):
 #class Board(pygame.sprite.Sprite):
     def __init__(self,XWid, YWid):
-        self.XWid= XWid+2
-        self.YWid= YWid+2
+        self.XWid= XWid+2 #Two because border
+        self.YWid= YWid+2 #Two because border
 	self.Tiles = []
 
     def createBoard(self):
 	self.Tiles = [[Tile(y,x) for y in range(self.YWid)] for x in range(self.XWid)] 
         #This with make a board with range [x][y]
-		#zones[i][j].x = j*40 + 20;
-        	#zones[i][j].y = i*40 + 20;
+
     def __getitem__(self,key):
 	return 0
 
@@ -22,23 +21,21 @@ class Board(object):
     def putmine(self,x,y):
 	self.Tiles[x][y].IfBomb = True
 
-
+	#When called, this will change each tile's BombSurround.
     def FindBombSurrond(self):
 	zoneNumber = 0
 	for x in range(0, self.XWid):
 		for y in range(0, self.YWid):
-			#zones[x][y].block_mc.visible = False
+			
+
+			#This is a check for if the tile is on the border
 			if (x == 0) or (x == (self.XWid)-1) or ( y == 0) or ( y == (self.YWid) - 1):
-				1+1
+				a = 1
 			else:
 			    neighboursArray = self.Findsurrounds(x,y)
 			    length = len(neighboursArray)
 			    zoneNumber = 0			#resetting the value for each zone
 			    for d in range(0, length):
-				#print neighboursArray
-				#print neighboursArray[d]
-				#print d
-				#print "\n"
 			    	if(self.Tiles[neighboursArray[d][1]][neighboursArray[d][0]].IfBomb):
 				    zoneNumber+=1 
 			#zones[x][y].num_txt.text = String(zoneNumber)
@@ -102,12 +99,12 @@ class Tile(Board):
 #class Board(pygame.sprite.Sprite):
     #def __init__(self, Ifbomb, BombSurround, IfRevealed, IfWall):
     def __init__(self, j, i):
-        self.IfBomb = False
-	self.BombActive = False
-        self.NumBombSurround = 0
-        self.IfRevealed = False
-        self.Xpos = i
-        self.Ypos = j
+        self.IfBomb = False #If there's a bomb there
+	    self.BombActive = False #If it's on/off
+        self.NumBombSurround = 0 #How much stuff surrounds it
+        self.IfRevealed = False #If it's been stepped on
+        self.Xpos = i #X Coord
+        self.Ypos = j #Y Coord
 	self.IfWall = False
    
     def getIfBomb(self):
@@ -146,4 +143,6 @@ class Tile(Board):
     def setYpos(Z):
         self.Ypos = Z
 
+	def __getitem__(self,key):
+	return 0
     
