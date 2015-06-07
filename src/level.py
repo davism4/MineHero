@@ -1,9 +1,11 @@
 import pygame
 import constants as con
 import tile
+import resources as res
 
 def run(grid_data = None):
-    screen = con.screen
+    screen = res.screen
+    tilesize = con.TILE_WIDTH
     
     clock = pygame.time.Clock()
 
@@ -17,6 +19,13 @@ def run(grid_data = None):
         board.getTile(0,i).setTileType(con.TYPE_WALL)
         board.getTile(con.GRID_SIZE-1,i).setTileType(con.TYPE_WALL)
 
+    for x in range(con.GRID_SIZE):
+        for y in range(con.GRID_SIZE):
+            t = board.getTile(x,y)
+            if (t.getTileType()==con.TYPE_WALL):
+                t.setImages(res.sanic)
+                #screen.blit(t.getImage(),pygame.Rect(x*tilesize, y*tilesize, tilesize, tilesize))
+
     
     board.getTile(5, 5).setTileType(con.TYPE_BOMB_ACTIVE)
     board.getTile(3, 3).setTileType(con.TYPE_BOMB_ACTIVE)
@@ -28,8 +37,8 @@ def run(grid_data = None):
     pos_y = (con.GRID_SIZE-1)
     dest_x = pos_x
     dest_y = pos_y
-    draw_x = pos_x*con.TILE_WIDTH
-    draw_y = pos_y*con.TILE_WIDTH
+    draw_x = pos_x*tilesize
+    draw_y = pos_y*tilesize
 
     hp_x = int(round(con.HEALTH_X*con.SCREEN_WIDTH))
     hp_y = int(round(con.HEALTH_Y*con.SCREEN_HEIGHT))
@@ -61,28 +70,28 @@ def run(grid_data = None):
     while (not gameExit):
         if (walking):
             if (direction == con.NORTH):
-                if (draw_y > dest_y*con.TILE_WIDTH):
+                if (draw_y > dest_y*tilesize):
                     draw_y -= con.MOVE_SPEED
                 else:
-                    draw_y = dest_y*con.TILE_WIDTH
+                    draw_y = dest_y*tilesize
                     walking = False
             elif (direction == con.SOUTH):
-                if (draw_y < dest_y*con.TILE_WIDTH):
+                if (draw_y < dest_y*tilesize):
                     draw_y += con.MOVE_SPEED
                 else:
-                    draw_y = dest_y*con.TILE_WIDTH
+                    draw_y = dest_y*tilesize
                     walking = False
             elif (direction == con.EAST):
-                if (draw_x < dest_x*con.TILE_WIDTH):
+                if (draw_x < dest_x*tilesize):
                     draw_x += con.MOVE_SPEED
                 else:
-                    draw_x = dest_x*con.TILE_WIDTH
+                    draw_x = dest_x*tilesize
                     walking = False
             elif (direction == con.WEST):
-                if (draw_x > dest_x*con.TILE_WIDTH):
+                if (draw_x > dest_x*tilesize):
                     draw_x -= con.MOVE_SPEED
                 else:
-                    draw_x = dest_x*con.TILE_WIDTH
+                    draw_x = dest_x*tilesize
                     walking = False
         
         # not walking --> accept input
@@ -122,24 +131,27 @@ def run(grid_data = None):
         pygame.event.clear()
 
         screen.fill(con.WHITE)
+        #image = pygame.Surface((con.SCREEN_WIDTH, con.SCREEN_HEIGHT))
+        
         # Tiles are mainly static
         for y in range(0, con.GRID_SIZE):
             for x in range(0, con.GRID_SIZE):
-                if (board.getTile(x,y).getTileType()==con.TYPE_BOMB_ACTIVE):
-                    pygame.draw.rect(screen, con.RED, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
-                elif (board.getTile(x,y).getTileType()==con.TYPE_BOMB_INACTIVE):
-                    pygame.draw.rect(screen, con.GRAY, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
+                t = board.getTile(x,y)
+                if (t.getTileType()==con.TYPE_BOMB_ACTIVE):
+                    pygame.draw.rect(screen, con.RED, (x*tilesize, y*tilesize, tilesize, tilesize))
+                elif (t.getTileType()==con.TYPE_BOMB_INACTIVE):
+                    pygame.draw.rect(screen, con.GRAY, (x*tilesize, y*tilesize, tilesize, tilesize))
 
-                elif (board.getTile(x,y).getTileType()==con.TYPE_WALL):
-                    pygame.draw.rect(screen, con.BLACK, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
+                elif (t.getTileType()==con.TYPE_WALL):
+                    screen.blit(t.getSprite().get(), t.getSprite().rect(x*tilesize, y*tilesize))
 
-        pygame.draw.rect(screen, con.GREEN, (draw_x, draw_y, con.TILE_WIDTH, con.TILE_WIDTH))
-                  
+        pygame.draw.rect(screen, con.GREEN, (draw_x, draw_y, tilesize, tilesize))
+        
 
         for h in range(0, health):
             pygame.draw.rect(screen, con.RED, (hp_x + h*15, hp_y, 10, 10))
 
-        
+        #screen.blit(image, pygame.Rect(0, 0, con.SCREEN_WIDTH, con.SCREEN_HEIGHT))
     #    healthLabel = myfont.render('health: '+`health`,1,white)
     #    screen.blit(healthLabel, (hp_x, hp_y))
         

@@ -1,4 +1,6 @@
 import constants as con
+import resources
+import sprite
 
 class Board(object):
 #class Board(pygame.sprite.Sprite):
@@ -88,12 +90,19 @@ class Board(object):
         return neighboursArray
 
 class Tile(Board):
-    def __init__(self, j, i, tt=con.TYPE_NONE):
+    def __init__(self, j, i, tt=con.TYPE_EMPTY):
         self.tileType = tt # refer to constants
         self.NumBombSurround = 0 #How much stuff surrounds it
         self.IfRevealed = False #If it's been stepped on
         self.Xpos = i #X Coord
         self.Ypos = j #Y Coord
+        self.sprite = None
+
+    def setImages(self, images):
+        self.sprite = sprite.Sprite(images)
+
+    def getSprite(self):
+        return self.sprite
 
     def getTileType(self):
         return self.tileType
