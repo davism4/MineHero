@@ -48,6 +48,7 @@ def run(grid_data = None):
     hitWall = pygame.mixer.Sound(os.path.join('sound','hitWall.wav'))
     levelStart = pygame.mixer.Sound(os.path.join('sound','levelStart.wav'))
     levelEnd = pygame.mixer.Sound(os.path.join('sound','levelEnd.wav'))
+    revealNum = pygame.mixer.Sound(os.path.join('sound','revealNum.wav'))
 
     ####################################################
     # Main Code
@@ -133,7 +134,9 @@ def run(grid_data = None):
                             hitBomb.play()
                             health -= 1
                             (board.tileAt(dest_x,dest_y)).setValue(con.TYPE_BOMB_INACTIVE)
-
+						#You step on a numbered tile that hasn't been revealed.
+                        elif ((board.tileAt(dest_x,dest_y).getValue() > con.TYPE_EMPTY) and (board.tileAt(dest_x,dest_y).getValue() < con.MAX_SURROUNDING) and (board.tileAt(dest_x,dest_y).getVisible() == False)):
+                            revealNum.play()
                         pos_x = dest_x
                         pos_y = dest_y
                         walking = True
