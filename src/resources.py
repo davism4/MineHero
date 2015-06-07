@@ -2,6 +2,7 @@
 # so that they can be loaded more quickly
 
 import pygame, os
+import constants as con
 
 directory = os.path.dirname(os.path.realpath(__file__))
 
@@ -21,7 +22,10 @@ screen = None # this is referenced in multiple places
 wall = pygame.image.load(os.path.join(directory,'graphics\\wall.png'))
 stoneSheet = pygame.image.load(os.path.join(directory,'graphics\\tiles.png'))
 jones = pygame.image.load(os.path.join(directory,'graphics\\Jonessheet.png'))
-
+Win = pygame.image.load(os.path.join(directory,'graphics\\Wallpaper.png'))
+Win = pygame.transform.scale(Win,(con.SCREEN_SIZE))
+Lose = pygame.image.load(os.path.join(directory,'graphics\\RipYou.png'))
+Lose = pygame.transform.scale(Lose,(con.SCREEN_SIZE))
 # Music
 pygame.mixer.init()
 hitBomb = pygame.mixer.Sound(os.path.join(directory, 'sound\\hitBomb.wav'))

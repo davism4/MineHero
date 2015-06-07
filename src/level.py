@@ -2,6 +2,7 @@ import pygame, tiling, sprites
 import constants as con, resources as res
 import os
 import randomMap
+import time
 
 def run(grid_data = None):
     screen = res.screen
@@ -41,7 +42,8 @@ def run(grid_data = None):
                 t.setVisible()
                 pos_x = x
                 pos_y = y
-	        
+	        if (t.getValue() == con.TYPE_EXIT):
+				t.setVisible()
 
     # Player variables
     health = con.MAX_HEALTH
@@ -82,7 +84,12 @@ def run(grid_data = None):
     # BEGIN MAIN LOOP
     while (not gameExit):
         if (health <= 0):
+            res.levelEnd.play()
+            screen.blit(res.Lose,(0,0))
+            pygame.display.flip()
+            time.sleep(5.5)
             gameExit = true
+            
         # Don't ask for movement input if already walking
         if (walking):
             if (direction == con.NORTH):
@@ -149,7 +156,12 @@ def run(grid_data = None):
                             res.revealNum.play()
 
                         elif ((board.tileAt(dest_x,dest_y).getValue() == con.TYPE_EXIT)):
+                            
                             res.levelEnd.play()
+                            screen.blit(res.Win,(0,0))
+                            pygame.display.flip()
+                            time.sleep(5.5) 
+                            gameExit = True
                         pos_x = dest_x
                         pos_y = dest_y
                         walking = True

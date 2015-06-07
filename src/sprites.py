@@ -10,7 +10,7 @@ Spritesheet = spritesheet.Spritesheet
 
 class TileSprite(Spritesheet):
     def __init__(self, number, randomize=True):
-        super(TileSprite, self).__init__(res.stoneSheet, (4,7))
+        super(TileSprite, self).__init__(res.stoneSheet, (4,8))
         if (randomize):
             random.seed()
             k = random.randrange(3)
@@ -20,9 +20,9 @@ class TileSprite(Spritesheet):
             if (k==0):
                 self.order = [(3,3),(2,3),(0,0),(1,0),(2,0),(3,0),(2,5),(2,4),(1,5)]
             elif (k==1):
-                self.order = [(0,4),(1,3),(0,1),(1,1),(2,1),(3,1),(0,6),(4,2),(5,1)]
+                self.order = [(0,4),(1,3),(0,1),(1,1),(2,1),(3,1),(0,6),(2,4),(1,5)]
             else:
-                self.order = [(1,4),(0,3),(0,1),(1,1),(2,1),(3,1),(3,5),(4,2),(5,1)]
+                self.order = [(1,4),(0,3),(0,1),(1,1),(2,1),(3,1),(3,5),(2,4),(1,5)]
         self.number = number
 
     # Gets the frame if the tile is hidden
