@@ -37,9 +37,11 @@ def run(grid_data = None):
             t = board.tileAt(x,y)
             if (t.getValue() != con.TYPE_WALL and not t.getIsBomb()):
                 board.setTileValues(x,y)
-            elif (t.getValue() == con.TYPE_START):
+            if (t.getValue() == con.TYPE_START):
+                t.setVisible()
                 pos_x = x
                 pos_y = y
+	        
 
     # Player variables
     health = con.MAX_HEALTH
@@ -145,7 +147,8 @@ def run(grid_data = None):
 						#You step on a numbered tile that hasn't been revealed.
                         elif ((board.tileAt(dest_x,dest_y).getValue() > con.TYPE_EMPTY) and (board.tileAt(dest_x,dest_y).getValue() < con.MAX_SURROUNDING) and (board.tileAt(dest_x,dest_y).getVisible() == False)):
                             res.revealNum.play()
-                        elif ((board.tileAt(dest_x,dest_y).getValue() > con.TYPE_EXIT)):
+
+                        elif ((board.tileAt(dest_x,dest_y).getValue() == con.TYPE_EXIT)):
                             res.levelEnd.play()
                         pos_x = dest_x
                         pos_y = dest_y
