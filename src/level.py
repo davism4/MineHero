@@ -1,7 +1,5 @@
-import pygame
-import constants as con
-import tile
-import resources as res
+import pygame, tiling
+import constants as con, resources as res
 
 def run(grid_data = None):
     screen = res.screen
@@ -10,7 +8,7 @@ def run(grid_data = None):
     clock = pygame.time.Clock()
 
     # Initialize the grid
-    board = tile.Board(con.GRID_SIZE, con.GRID_SIZE)
+    board = tiling.Board(con.GRID_SIZE, con.GRID_SIZE)
 
     # TODO: Read grid data (2D-array), parse into tiles
     for i in range(con.GRID_SIZE):
@@ -121,11 +119,11 @@ def run(grid_data = None):
                         if (board.tileAt(dest_x,dest_y).getValue() == con.TYPE_BOMB_ACTIVE):
                             health -= 1
                             (board.tileAt(dest_x,dest_y)).setValue(con.TYPE_BOMB_INACTIVE)
-                        else:
-                            pos_x = dest_x
-                            pos_y = dest_y
-                            walking = True
-                            print(board.tileAt(dest_x,dest_y).getValue())
+
+                        pos_x = dest_x
+                        pos_y = dest_y
+                        walking = True
+                        #print(board.tileAt(dest_x,dest_y).getValue())
 
         pygame.event.clear()
 
