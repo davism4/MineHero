@@ -16,13 +16,13 @@ class TileSprite(Spritesheet):
             k = random.randrange(3)
             # array index is the tile contents
             # array value (x,x) refers to a location on the spritesheete
-            # order = [hidden, 0, 1, 2, 3, 4, bomb]
+            # order = [hidden, 0, 1, 2, 3, 4, bomb, enter, exit]
             if (k==0):
-                self.order = [(3,3),(2,3),(0,0),(1,0),(2,0),(3,0),(2,5)]
+                self.order = [(3,3),(2,3),(0,0),(1,0),(2,0),(3,0),(2,5),(2,4),(1,5)]
             elif (k==1):
-                self.order = [(0,4),(1,3),(0,1),(1,1),(2,1),(3,1),(0,6)]
+                self.order = [(0,4),(1,3),(0,1),(1,1),(2,1),(3,1),(0,6),(4,2),(5,1)]
             else:
-                self.order = [(1,4),(0,3),(0,1),(1,1),(2,1),(3,1),(3,5)]
+                self.order = [(1,4),(0,3),(0,1),(1,1),(2,1),(3,1),(3,5),(4,2),(5,1)]
         self.number = number
 
     # Gets the frame if the tile is hidden
@@ -34,6 +34,10 @@ class TileSprite(Spritesheet):
     def frameVisible(self):
         if (self.number == con.TYPE_BOMB_ACTIVE or self.number == con.TYPE_BOMB_INACTIVE):
             (c, r) = self.order[6]
+        elif (self.number == con.TYPE_START):
+            (c, r) = self.order[7]
+        elif (self.number == con.TYPE_EXIT):
+            (c, r) = self.order[8]
         else:
             (c, r) = self.order[self.number + 1]
         return self.frameAt(c, r)

@@ -55,12 +55,6 @@ def run(grid_data = None):
 
 	#Sound initalization
     #This currently works when this file has a subdirectory called sound.
-    pygame.mixer.init()
-    hitBomb = pygame.mixer.Sound(os.path.join('sound','hitBomb.wav'))
-    hitWall = pygame.mixer.Sound(os.path.join('sound','hitWall.wav'))
-    levelStart = pygame.mixer.Sound(os.path.join('sound','levelStart.wav'))
-    levelEnd = pygame.mixer.Sound(os.path.join('sound','levelEnd.wav'))
-    revealNum = pygame.mixer.Sound(os.path.join('sound','revealNum.wav'))
 
     ####################################################
     # Main Code
@@ -68,13 +62,13 @@ def run(grid_data = None):
 
     def can_move_to(x, y):
         if (x >= con.GRID_SIZE or x < 0):
-            hitWall.play()
+            res.hitWall.play()
             return False
         elif (y >= con.GRID_SIZE or y < 0):
-            hitWall.play()
+            res.hitWall.play()
             return False
         elif (board.tileAt(x,y).getValue()==con.TYPE_WALL):
-            hitWall.play()
+            res.hitWall.play()
             return False
         else:
             return True
@@ -85,6 +79,8 @@ def run(grid_data = None):
 
     # BEGIN MAIN LOOP
     while (not gameExit):
+        if (health <= 0):
+            gameExit = true
         # Don't ask for movement input if already walking
         if (walking):
             if (direction == con.NORTH):
@@ -143,12 +139,14 @@ def run(grid_data = None):
                     if can_move_to(dest_x,dest_y):
 						#You hit a bomb
                         if (board.tileAt(dest_x,dest_y).getValue() == con.TYPE_BOMB_ACTIVE):
-                            hitBomb.play()
+                            res.hitBomb.play()
                             health -= 1
                             (board.tileAt(dest_x,dest_y)).setValue(con.TYPE_BOMB_INACTIVE)
 						#You step on a numbered tile that hasn't been revealed.
                         elif ((board.tileAt(dest_x,dest_y).getValue() > con.TYPE_EMPTY) and (board.tileAt(dest_x,dest_y).getValue() < con.MAX_SURROUNDING) and (board.tileAt(dest_x,dest_y).getVisible() == False)):
-                            revealNum.play()
+                            res.revealNum.play()
+                        elif ((board.tileAt(dest_x,dest_y).getValue() > con.TYPE_EXIT)):
+                            res.levelEnd.play()
                         pos_x = dest_x
                         pos_y = dest_y
                         walking = True
