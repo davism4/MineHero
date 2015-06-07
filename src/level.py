@@ -1,6 +1,7 @@
 import pygame, tiling, sprites
 import constants as con, resources as res
 import os
+import randomMap
 
 def run(grid_data = None):
     screen = res.screen
@@ -13,27 +14,37 @@ def run(grid_data = None):
     board = tiling.Board(con.GRID_SIZE, con.GRID_SIZE)
 
     # TODO: Read grid data (2D-array), parse into tiles
-    for i in range(con.GRID_SIZE):
-        board.tileAt(i,0).setValue(con.TYPE_WALL)
-        board.tileAt(i,con.GRID_SIZE-1).setValue(con.TYPE_WALL)
-        board.tileAt(0,i).setValue(con.TYPE_WALL)
-        board.tileAt(con.GRID_SIZE-1,i).setValue(con.TYPE_WALL)
-    
-    board.tileAt(5, 5).setValue(con.TYPE_BOMB_ACTIVE)
-    board.tileAt(3, 3).setValue(con.TYPE_BOMB_ACTIVE)
+##    for i in range(con.GRID_SIZE):
+##        board.tileAt(i,0).setValue(con.TYPE_WALL)
+##        board.tileAt(i,con.GRID_SIZE-1).setValue(con.TYPE_WALL)
+##        board.tileAt(0,i).setValue(con.TYPE_WALL)
+##        board.tileAt(con.GRID_SIZE-1,i).setValue(con.TYPE_WALL)
+##    
+##    board.tileAt(5, 5).setValue(con.TYPE_BOMB_ACTIVE)
+##    board.tileAt(3, 3).setValue(con.TYPE_BOMB_ACTIVE)
+    grid = randomMap.RandomMap()    
+    pos_x = 1
+    pos_y = (con.GRID_SIZE-1)
 
     # Finish setting up the board
     for x in range(0, con.GRID_SIZE):
         for y in range(0, con.GRID_SIZE):
             t = board.tileAt(x,y)
+            t.setValue(grid[x][y])
+    
+    for x in range(0, con.GRID_SIZE):
+        for y in range(0, con.GRID_SIZE):
+            t = board.tileAt(x,y)
             if (t.getValue() != con.TYPE_WALL and not t.getIsBomb()):
                 board.setTileValues(x,y)
+            elif (t.getValue() == con.TYPE_START):
+                pos_x = x
+                pos_y = y
 
     # Player variables
     health = con.MAX_HEALTH
     direction = con.STAY # used for animation
-    pos_x = 1
-    pos_y = (con.GRID_SIZE-1)
+
     dest_x = pos_x
     dest_y = pos_y
     draw_x = pos_x*tilesize

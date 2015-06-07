@@ -1,9 +1,14 @@
 import constants as con, resources as res
 import spritesheet, sprites
 
+
+GRID_SIZE = con.GRID_SIZE
+
 # One instance for level; contains a 2D array of Tiles
 class Board(object):
-    def __init__(self, XWid=con.GRID_SIZE, YWid=con.GRID_SIZE):
+    
+    
+    def __init__(self, XWid=GRID_SIZE, YWid=GRID_SIZE):
         #super(object, self).__init__()
         self.dimX = XWid
         self.dimY = YWid
@@ -13,22 +18,41 @@ class Board(object):
     def tileAt(self, x, y):
         return self.Tiles[x][y]
 
-    # do not call on wall spaces
-    # Note: Code is substituted elsewhere
+    # do not call manually
+    # Once the map is created, this iterates through tiles
+    # and sets the number of neighboring bombs
     def setTileValues(self, x, y):
         tile = self.Tiles[x][y]
         if (tile.value != con.TYPE_WALL):
             neighbors = []
             count = 0
             # Only check in cardinal directions
-            for (i,j) in [[0, 1],[1, 0],[0,-1],[-1,0]]:
-		t = self.Tiles[x+i][y+j]
-		if (t.value != con.TYPE_WALL):
-		    neighbors.append(t)
-		    if (t.getIsBomb()):
-			count += 1
+            if (x-1 >= 0):
+                n = self.Tiles[x-1][y]
+                if (n.value != con.TYPE_WALL):
+                    neighbors.append(n)
+                    if (n.getIsBomb()):
+                        count += 1
+            if (x+1 < con.GRID_SIZE):
+                n = self.Tiles[x+1][y]
+                if (n.value != con.TYPE_WALL):
+                    neighbors.append(n)
+                    if (n.getIsBomb()):
+                        count += 1
+            if (y-1 >= 0):
+                n = self.Tiles[x][y-1]
+                if (n.value != con.TYPE_WALL):
+                    neighbors.append(n)
+                    if (n.getIsBomb()):
+                        count += 1
+            if (y+1 < con.GRID_SIZE):
+                n = self.Tiles[x][y+1]
+                if (n.value != con.TYPE_WALL):
+                    neighbors.append(n)
+                    if (n.getIsBomb()):
+                        count += 1
             tile.neighbors = neighbors
-            if (tile.value >=0 and tile.value <= 8):
+            if (tile.value >=0 and tile.value <= 4):
                 self.Tiles[x][y].setValue(count)
         return
 
