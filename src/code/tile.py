@@ -2,12 +2,9 @@ import constants as con
 
 class Board(object):
 #class Board(pygame.sprite.Sprite):
-    def __init__(self, XWid, YWid):
-        self.XWid= XWid+2 #Two because border
-        self.YWid= YWid+2 #Two because border
-        self.Tiles = []
-
-    def createBoard(self):
+    def __init__(self, XWid=con.GRID_SIZE, YWid=con.GRID_SIZE):
+        self.XWid= XWid #+2 #Two because border
+        self.YWid= YWid #+2 #Two because border
         self.Tiles = [[Tile(y,x) for y in range(self.YWid)] for x in range(self.XWid)] 
         #This with make a board with range [x][y]
 

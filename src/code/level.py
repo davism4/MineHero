@@ -2,14 +2,23 @@ import pygame
 import constants as con
 import tile
 
-def run():
+def run(grid_data = None):
     screen = con.screen
     
     clock = pygame.time.Clock()
 
     # Initialize the grid
     board = tile.Board(con.GRID_SIZE, con.GRID_SIZE)
-    board.createBoard()
+
+    # TODO: Read grid data (2D-array), parse into tiles
+    for x in range(con.GRID_SIZE):
+        for y in range(con.GRID_SIZE):
+            board.getTile(x,0).setTileType(con.TYPE_WALL)
+            board.getTile(x,con.GRID_SIZE-1).setTileType(con.TYPE_WALL)
+            board.getTile(0,y).setTileType(con.TYPE_WALL)
+            board.getTile(con.GRID_SIZE-1,y).setTileType(con.TYPE_WALL)
+
+    
     board.getTile(5, 5).setTileType(con.TYPE_BOMB_ACTIVE)
     board.getTile(3, 3).setTileType(con.TYPE_BOMB_ACTIVE)
 
@@ -28,7 +37,7 @@ def run():
     #print(`hp_x` + ' , ' + `hp_y`)
     #print(`con.SCREEN_WIDTH` + ' , ' + `con.SCREEN_HEIGHT`)
 
-    #myfont = pygame.font.SysFont("monospace",15)
+    #myfont = pygame.font.SysFont("monospace",15)   
 
 
     ####################################################
@@ -119,8 +128,7 @@ def run():
             for x in range(0, con.GRID_SIZE):
                 if (board.getTile(x,y).getTileType()==con.TYPE_BOMB_ACTIVE):
                     pygame.draw.rect(screen, con.RED, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
-                
-		elif (board.getTile(x,y).getTileType()==con.TYPE_BOMB_INACTIVE):
+                elif (board.getTile(x,y).getTileType()==con.TYPE_BOMB_INACTIVE):
                     pygame.draw.rect(screen, con.GRAY, (x*con.TILE_WIDTH, y*con.TILE_WIDTH, con.TILE_WIDTH, con.TILE_WIDTH))
 
                 elif (board.getTile(x,y).getTileType()==con.TYPE_WALL):
