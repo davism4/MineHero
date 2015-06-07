@@ -27,30 +27,13 @@ class Board(object):
             neighbors = []
             count = 0
             # Only check in cardinal directions
-            if (x-1 >= 0):
-                n = self.Tiles[x-1][y]
-                if (n.value != con.TYPE_WALL):
-                    neighbors.append(n)
-                    if (n.getIsBomb()):
-                        count += 1
-            if (x+1 < con.GRID_SIZE):
-                n = self.Tiles[x+1][y]
-                if (n.value != con.TYPE_WALL):
-                    neighbors.append(n)
-                    if (n.getIsBomb()):
-                        count += 1
-            if (y-1 >= 0):
-                n = self.Tiles[x][y-1]
-                if (n.value != con.TYPE_WALL):
-                    neighbors.append(n)
-                    if (n.getIsBomb()):
-                        count += 1
-            if (y+1 < con.GRID_SIZE):
-                n = self.Tiles[x][y+1]
-                if (n.value != con.TYPE_WALL):
-                    neighbors.append(n)
-                    if (n.getIsBomb()):
-                        count += 1
+            for (i,j) in [[0, 1],[1, 0],[0,-1],[-1,0]]:
+                if (x+i>=0 and x+i<GRID_SIZE and y+j>=0 and y+j<GRID_SIZE):
+                    n = self.Tiles[x+i][y+j]
+                    if (n.value != con.TYPE_WALL):
+                        neighbors.append(n)
+                        if (n.getIsBomb()):
+                            count += 1
             tile.neighbors = neighbors
             if (tile.value >=0 and tile.value <= 4):
                 self.Tiles[x][y].setValue(count)
