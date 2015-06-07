@@ -21,3 +21,9 @@ unknown = pygame.image.load(os.path.join(directory,'graphics\\alpha\\unknown.png
 wall = pygame.image.load(os.path.join(directory,'graphics\\alpha\\wall.png'))
 
 # Music
+pygame.mixer.init()
+hitBomb = pygame.mixer.Sound(os.path.join(directory, 'sound\\hitBomb.wav'))
+hitWall = pygame.mixer.Sound(os.path.join(directory, 'sound\\hitWall.wav'))
+levelStart = pygame.mixer.Sound(os.path.join(directory, 'sound\\levelStart.wav'))
+levelEnd = pygame.mixer.Sound(os.path.join(directory, 'sound\\levelEnd.wav'))
+revealNum = pygame.mixer.Sound(os.path.join(directory, 'sound\\revealNum.wav'))
