@@ -11,12 +11,11 @@ def run(grid_data = None):
     board = tile.Board(con.GRID_SIZE, con.GRID_SIZE)
 
     # TODO: Read grid data (2D-array), parse into tiles
-    for x in range(con.GRID_SIZE):
-        for y in range(con.GRID_SIZE):
-            board.getTile(x,0).setTileType(con.TYPE_WALL)
-            board.getTile(x,con.GRID_SIZE-1).setTileType(con.TYPE_WALL)
-            board.getTile(0,y).setTileType(con.TYPE_WALL)
-            board.getTile(con.GRID_SIZE-1,y).setTileType(con.TYPE_WALL)
+    for i in range(con.GRID_SIZE):
+        board.getTile(i,0).setTileType(con.TYPE_WALL)
+        board.getTile(i,con.GRID_SIZE-1).setTileType(con.TYPE_WALL)
+        board.getTile(0,i).setTileType(con.TYPE_WALL)
+        board.getTile(con.GRID_SIZE-1,i).setTileType(con.TYPE_WALL)
 
     
     board.getTile(5, 5).setTileType(con.TYPE_BOMB_ACTIVE)
@@ -110,11 +109,11 @@ def run(grid_data = None):
                     elif (event.key == pygame.K_DOWN):
                         direction = con.SOUTH
                         dest_y = pos_y + 1
-                    #print("destination: "+`dest_x`+' , '+`dest_y`)
+                    print("destination: "+`dest_x`+' , '+`dest_y` + ' type: ' + `board.getTile(dest_x,dest_y).getTileType()`)
                     if can_move(dest_x,dest_y):
-                        if (board.getTile(x,y).getTileType() == con.TYPE_BOMB_ACTIVE):
+                        if (board.getTile(dest_x,dest_y).getTileType() == con.TYPE_BOMB_ACTIVE):
                             health -= 1
-                            board.getTile(x,y).setTileType(con.TYPE_BOMB_INACTIVE)
+                            (board.getTile(dest_x,dest_y)).setTileType(con.TYPE_BOMB_INACTIVE)
                         else:
                             pos_x = dest_x
                             pos_y = dest_y
