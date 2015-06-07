@@ -9,7 +9,10 @@ class Sprite(pygame.sprite.Sprite):
         (self.w, self.h) = (width, height)
         self.index = 0
         self.addImages(images)
-        self.activeFrame = self.images[self.index]
+        if (images == None or images == []):
+            self.activeFrame = None
+        else:
+            self.activeFrame = self.images[self.index]
 
     def get(self):
         return self.activeFrame
@@ -18,8 +21,9 @@ class Sprite(pygame.sprite.Sprite):
         return pygame.Rect(x, y, x+self.w, y+self.h)
     
     def advanceFrame(self):
-        self.index = (self.index + 1) % len(self.images)
-        self.activeFrame = self.images[self.index]
+        if len(self.images) > 0:
+            self.index = (self.index + 1) % len(self.images)
+            self.activeFrame = self.images[self.index]
 
     def addImages(self, images):
         for i in images:
@@ -28,6 +32,11 @@ class Sprite(pygame.sprite.Sprite):
             pygame.transform.scale(i, (self.w, self.h), temp)
             i = temp
             self.images.append(i)
+
+    def setImages(self, images):
+        self.addImages(images)
+        self.index = 0
+        self.activeFrame = self.images[0]
 
     def setPos(self, x, y):
         self.x = x

@@ -10,17 +10,17 @@ screen = None # this is referenced in multiple places
 
 # Graphics
 sanic = [pygame.image.load(os.path.join(directory,'graphics\\sanick.jpg'))]
-tileBombActive = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_active.png'))]
-tileBombInctive = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile1 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile2 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile3 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile4 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile5 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile6 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tile7 = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))]
-tileBlank = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\blank.png'))]
-unknown = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\unknown.png'))]
-wall = [pygame.image.load(os.path.join(directory,'graphics\\alpha\\wall.png'))]
+bombActive = pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_active.png'))
+bombInactive = pygame.image.load(os.path.join(directory,'graphics\\alpha\\bomb_inactive.png'))
+tile1 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\1.png'))
+tile2 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\2.png'))
+tile3 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\3.png'))
+tile4 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\4.png'))
+tile5 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\5.png'))
+tile6 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\6.png'))
+tile7 = pygame.image.load(os.path.join(directory,'graphics\\alpha\\7.png'))
+blank = pygame.image.load(os.path.join(directory,'graphics\\alpha\\blank.png'))
+unknown = pygame.image.load(os.path.join(directory,'graphics\\alpha\\unknown.png'))
+wall = pygame.image.load(os.path.join(directory,'graphics\\alpha\\wall.png'))
 
 # Music

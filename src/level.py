@@ -14,22 +14,20 @@ def run(grid_data = None):
 
     # TODO: Read grid data (2D-array), parse into tiles
     for i in range(con.GRID_SIZE):
-        board.getTile(i,0).setTileType(con.TYPE_WALL)
-        board.getTile(i,con.GRID_SIZE-1).setTileType(con.TYPE_WALL)
-        board.getTile(0,i).setTileType(con.TYPE_WALL)
-        board.getTile(con.GRID_SIZE-1,i).setTileType(con.TYPE_WALL)
-
-    for x in range(con.GRID_SIZE):
-        for y in range(con.GRID_SIZE):
-            t = board.getTile(x,y)
-            if (t.getTileType()==con.TYPE_WALL):
-                t.setImages(res.wall)
-            else:
-                t.setImages(res.unknown)
-
+        board.tileAt(i,0).setValue(con.TYPE_WALL)
+        board.tileAt(i,con.GRID_SIZE-1).setValue(con.TYPE_WALL)
+        board.tileAt(0,i).setValue(con.TYPE_WALL)
+        board.tileAt(con.GRID_SIZE-1,i).setValue(con.TYPE_WALL)
     
-    board.getTile(5, 5).setTileType(con.TYPE_BOMB_ACTIVE)
-    board.getTile(3, 3).setTileType(con.TYPE_BOMB_ACTIVE)
+    board.tileAt(5, 5).setValue(con.TYPE_BOMB_ACTIVE)
+    board.tileAt(3, 3).setValue(con.TYPE_BOMB_ACTIVE)
+
+    # Finish setting up the board
+    for x in range(0, con.GRID_SIZE):
+        for y in range(0, con.GRID_SIZE):
+            t = board.tileAt(x,y)
+            if (t.getValue() != con.TYPE_WALL and not t.getIsBomb()):
+                board.setTileValues(x,y)
 
     # Player variables
     health = con.MAX_HEALTH
@@ -43,10 +41,6 @@ def run(grid_data = None):
 
     hp_x = int(round(con.HEALTH_X*con.SCREEN_WIDTH))
     hp_y = int(round(con.HEALTH_Y*con.SCREEN_HEIGHT))
-    #print(`hp_x` + ' , ' + `hp_y`)
-    #print(`con.SCREEN_WIDTH` + ' , ' + `con.SCREEN_HEIGHT`)
-
-    #myfont = pygame.font.SysFont("monospace",15)   
 
 
     ####################################################
@@ -58,7 +52,7 @@ def run(grid_data = None):
             return False
         elif (y >= con.GRID_SIZE or y < 0):
             return False
-        elif (board.getTile(x,y).getTileType()==con.TYPE_WALL):# or grid[x][y] == con.TYPE_BOMB_ACTIVE):
+        elif (board.tileAt(x,y).getValue()==con.TYPE_WALL):
             return False
         else:
             return True
@@ -69,6 +63,7 @@ def run(grid_data = None):
 
     # BEGIN MAIN LOOP
     while (not gameExit):
+        # Don't ask for movement input if already walking
         if (walking):
             if (direction == con.NORTH):
                 if (draw_y > dest_y*tilesize):
@@ -94,6 +89,8 @@ def run(grid_data = None):
                 else:
                     draw_x = dest_x*tilesize
                     walking = False
+            if (not walking):
+                board.tileAt(dest_x,dest_y).setVisible()
         
         # not walking --> accept input
         dest_x = pos_x
@@ -121,13 +118,14 @@ def run(grid_data = None):
                         dest_y = pos_y + 1
 
                     if can_move_to(dest_x,dest_y):
-                        if (board.getTile(dest_x,dest_y).getTileType() == con.TYPE_BOMB_ACTIVE):
+                        if (board.tileAt(dest_x,dest_y).getValue() == con.TYPE_BOMB_ACTIVE):
                             health -= 1
-                            (board.getTile(dest_x,dest_y)).setTileType(con.TYPE_BOMB_INACTIVE)
+                            (board.tileAt(dest_x,dest_y)).setValue(con.TYPE_BOMB_INACTIVE)
                         else:
                             pos_x = dest_x
                             pos_y = dest_y
                             walking = True
+                            print(board.tileAt(dest_x,dest_y).getValue())
 
         pygame.event.clear()
 
@@ -137,14 +135,9 @@ def run(grid_data = None):
         # Tiles are mainly static
         for y in range(0, con.GRID_SIZE):
             for x in range(0, con.GRID_SIZE):
-                t = board.getTile(x,y)
-                screen.blit(t.getSprite().get(), t.getSprite().rect(x*tilesize, y*tilesize))
-                #if (t.getTileType()==con.TYPE_BOMB_ACTIVE):
-                #    pygame.draw.rect(screen, con.RED, (x*tilesize, y*tilesize, tilesize, tilesize))
-                #elif (t.getTileType()==con.TYPE_BOMB_INACTIVE):
-                #    pygame.draw.rect(screen, con.GRAY, (x*tilesize, y*tilesize, tilesize, tilesize))
-                #elif (t.getTileType()==con.TYPE_WALL):
-                #    screen.blit(t.getSprite().get(), t.getSprite().rect(x*tilesize, y*tilesize))
+                t = board.tileAt(x,y)
+                if t.getSprite().get() != None:
+                    screen.blit(t.getSprite().get(), t.getSprite().rect(x*tilesize, y*tilesize))
 
         pygame.draw.rect(screen, con.GREEN, (draw_x, draw_y, tilesize, tilesize))
         
