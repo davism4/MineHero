@@ -1,5 +1,6 @@
 import pygame, tiling, sprites
 import constants as con, resources as res
+import os
 
 def run(grid_data = None):
     screen = res.screen
@@ -41,6 +42,14 @@ def run(grid_data = None):
     hp_x = int(round(con.HEALTH_X*con.SCREEN_WIDTH))
     hp_y = int(round(con.HEALTH_Y*con.SCREEN_HEIGHT))
 
+	#Sound initalization
+    #This currently works when this file has a subdirectory called sound.
+    pygame.mixer.init()
+    hitBomb = pygame.mixer.Sound(os.path.join('sound','hitBomb.wav'))
+    hitWall = pygame.mixer.Sound(os.path.join('sound','hitWall.wav'))
+    levelStart = pygame.mixer.Sound(os.path.join('sound','levelStart.wav'))
+    levelEnd = pygame.mixer.Sound(os.path.join('sound','levelEnd.wav'))
+    revealNum = pygame.mixer.Sound(os.path.join('sound','revealNum.wav'))
 
     ####################################################
     # Main Code
@@ -48,10 +57,13 @@ def run(grid_data = None):
 
     def can_move_to(x, y):
         if (x >= con.GRID_SIZE or x < 0):
+            hitWall.play()
             return False
         elif (y >= con.GRID_SIZE or y < 0):
+            hitWall.play()
             return False
         elif (board.tileAt(x,y).getValue()==con.TYPE_WALL):
+            hitWall.play()
             return False
         else:
             return True
@@ -116,11 +128,16 @@ def run(grid_data = None):
                         direction = con.SOUTH
                         dest_y = pos_y + 1
 
+					#Major walking routine
                     if can_move_to(dest_x,dest_y):
+						#You hit a bomb
                         if (board.tileAt(dest_x,dest_y).getValue() == con.TYPE_BOMB_ACTIVE):
+                            hitBomb.play()
                             health -= 1
                             (board.tileAt(dest_x,dest_y)).setValue(con.TYPE_BOMB_INACTIVE)
-
+						#You step on a numbered tile that hasn't been revealed.
+                        elif ((board.tileAt(dest_x,dest_y).getValue() > con.TYPE_EMPTY) and (board.tileAt(dest_x,dest_y).getValue() < con.MAX_SURROUNDING) and (board.tileAt(dest_x,dest_y).getVisible() == False)):
+                            revealNum.play()
                         pos_x = dest_x
                         pos_y = dest_y
                         walking = True
