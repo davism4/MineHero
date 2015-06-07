@@ -1,9 +1,10 @@
-import pygame, tiling
+import pygame, tiling, sprites
 import constants as con, resources as res
 
 def run(grid_data = None):
     screen = res.screen
     tilesize = con.TILE_WIDTH
+    player = sprites.JonesSprite()
     
     clock = pygame.time.Clock()
 
@@ -123,22 +124,29 @@ def run(grid_data = None):
                         pos_x = dest_x
                         pos_y = dest_y
                         walking = True
+                        player.setDirection(direction)
                         #print(board.tileAt(dest_x,dest_y).getValue())
 
         pygame.event.clear()
 
         screen.fill(con.WHITE)
-        #image = pygame.Surface((con.SCREEN_WIDTH, con.SCREEN_HEIGHT))
         
         # Tiles are mainly static
         for y in range(0, con.GRID_SIZE):
             for x in range(0, con.GRID_SIZE):
-                t = board.tileAt(x,y)
-                if t.getSprite().get() != None:
-                    screen.blit(t.getSprite().get(), t.getSprite().rect(x*tilesize, y*tilesize))
+                sprite = board.tileAt(x,y).getSprite()
+                if board.tileAt(x,y).getValue()==con.TYPE_WALL:
+                    frame = sprite.frame()
+                elif board.tileAt(x,y).getVisible():
+                    frame = sprite.frameVisible()
+                else:
+                    frame = sprite.frameHidden()
+                screen.blit(frame, sprite.rect(x*tilesize, y*tilesize))
 
-        pygame.draw.rect(screen, con.GREEN, (draw_x, draw_y, tilesize, tilesize))
+        #pygame.draw.rect(screen, con.GREEN, (draw_x, draw_y, tilesize, tilesize))
         
+        screen.blit(player.frame(), player.rect(draw_x, draw_y))
+        player.animateNext()
 
         for h in range(0, health):
             pygame.draw.rect(screen, con.RED, (hp_x + h*15, hp_y, 10, 10))

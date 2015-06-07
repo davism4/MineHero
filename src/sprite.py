@@ -2,6 +2,8 @@ import pygame
 import constants as con
 import resources as res
 
+# DEPRECATED!
+
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, images, (width, height)=con.TILE_SIZE):
         super(Sprite, self).__init__()
@@ -48,8 +50,8 @@ class Sprite(pygame.sprite.Sprite):
 
 class MultiSprite(Sprite):
     def __init__(self, images, (width, height)=con.TILE_SIZE):
-        super(MultiSPrite, self, (width, height)).__init__()
-        self.speed = 1.0
+        super(MultiSprite, self, (width, height)).__init__()
+        self.speed = 0.0
 
     def setSpeed(self, speed):
         self.speed = speed
@@ -63,12 +65,16 @@ class MultiSprite(Sprite):
 class SheetSprite(Sprite):
     def __init__(self, sheet, (width, height), (rows, cols)):
         super(SheetSprite, self, size).__init__()
-        self.speed = 1.0
+        self.speed = 0.0
         self.r = 0 # current row
         self.c = 0 # current column
         (self.rows, self.cols) = (rows, cols)
         self.sheet = sheet
 
+    def setFrame(self, r, c):
+	self.r = r
+	self.c = c
+	
     def frameAt(self, r, c):
         rect = pygame.Rect((r*frameWidth,c*frameHeight,(r+1)*frameWidth,(c+1)*frameHeight))
         image = pygame.Surface(rect.size).convert()
@@ -99,3 +105,4 @@ class SheetSprite(Sprite):
                     self.c = 0
             self.activeFrame = self.frameAt(self.r, self.c)
         return self.activeFrame
+

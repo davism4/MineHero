@@ -1,5 +1,7 @@
 import constants as con
 
+# DEPRECATED!
+
 class Board(object):
 #class Board(pygame.sprite.Sprite):
     def __init__(self, XWid=con.GRID_SIZE, YWid=con.GRID_SIZE):
